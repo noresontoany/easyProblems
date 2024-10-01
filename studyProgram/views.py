@@ -17,6 +17,12 @@ class ShowStudentView(TemplateView):
 
         return context
 
+
+
+
+
+
+
 # class ShowProblemView(View):
 #     def get(request, *args, **kwargs):
 #         problems = Problem.objects.all()

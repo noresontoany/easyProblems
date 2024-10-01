@@ -18,10 +18,14 @@ from django.contrib import admin
 from django.urls import include, path
 from studyProgram import views   
 from rest_framework.routers import DefaultRouter
-from studyProgram.api import StudentViewSet
+from studyProgram.api import StudentViewSet, ProblemViewSet, LessonNameViewSet, ProgramingLanguageViewSet, SubmissionViewSet
 
 router = DefaultRouter()
-router.register("studyProgram", StudentViewSet, basename="studyProgram")
+router.register("StudentViewSet", StudentViewSet, basename="StudentViewSet")
+router.register("ProblemViewSet", ProblemViewSet, basename="ProblemViewSet")
+router.register("LessonNameViewSet", LessonNameViewSet, basename="LessonNameViewSet")
+router.register("ProgramingLanguageViewSet", ProgramingLanguageViewSet, basename="ProgramingLanguageViewSet")
+router.register("SubmissionViewSet", SubmissionViewSet, basename="SubmissionViewSet")
 
 urlpatterns = [
     path('students/', views.ShowStudentView.as_view()),

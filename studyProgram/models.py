@@ -11,16 +11,16 @@ class LessonName(models.Model):
     description = models.TextField("Теория")
     programing_language = models.ForeignKey("ProgramingLanguage", on_delete=models.CASCADE, null=True)
     def __str__(self) -> str:
-        return self.name
+        return f"{self.programing_language.name} / {self.name}"
 
 class Problem(models.Model):
     name  = models.TextField("Название задачи")
     description = models.TextField("Условие")
-    lesson_name = models.ForeignKey("LessonName", on_delete=models.CASCADE, null=True)
-    programing_language = models.ForeignKey("ProgramingLanguage", on_delete=models.CASCADE, null=True)
-    
+    lesson_name = models.ForeignKey("LessonName", on_delete=models.CASCADE, null=True)  
     def __str__(self) -> str:
         return self.name
+    # def __str__(self) -> str:
+    #     return f"{self.lesson_name.programing_language.name} /  {self.lesson_name.name} / {self.name}"
 
 class Student(models.Model):
     name  = models.TextField("Ник")

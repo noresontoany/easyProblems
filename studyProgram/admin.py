@@ -13,9 +13,8 @@ class LessonNameAdmin(admin.ModelAdmin):
 
 @admin.register(Problem)
 class ProblemAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'lesson_name', 'programing_language']
-
-
+    list_display = ['name', 'description', 'lesson_name']
+    
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']

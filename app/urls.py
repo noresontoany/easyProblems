@@ -18,7 +18,13 @@ from django.contrib import admin
 from django.urls import include, path
 from studyProgram import views   
 from rest_framework.routers import DefaultRouter
-from studyProgram.api import StudentViewSet, ProblemViewSet, LessonNameViewSet, ProgramingLanguageViewSet, SubmissionViewSet
+
+from studyProgram.api import StudentViewSet
+from studyProgram.api import ProblemViewSet
+from studyProgram.api import LessonNameViewSet
+from studyProgram.api import ProgramingLanguageViewSet
+from studyProgram.api import SubmissionViewSet
+from studyProgram.api import StudentFieldsView
 
 router = DefaultRouter()
 router.register("StudentViewSet", StudentViewSet, basename="StudentViewSet")
@@ -26,9 +32,11 @@ router.register("ProblemViewSet", ProblemViewSet, basename="ProblemViewSet")
 router.register("LessonNameViewSet", LessonNameViewSet, basename="LessonNameViewSet")
 router.register("ProgramingLanguageViewSet", ProgramingLanguageViewSet, basename="ProgramingLanguageViewSet")
 router.register("SubmissionViewSet", SubmissionViewSet, basename="SubmissionViewSet")
+# router.register("studentFields", StudentFieldsView, basename="studentFields")
 
 urlpatterns = [
     path('students/', views.ShowStudentView.as_view()),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/studentFields/', StudentFieldsView.as_view(), name='student-fields'),
 ]

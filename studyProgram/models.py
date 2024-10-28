@@ -39,3 +39,5 @@ class Submission(models.Model):
     problem  = models.ForeignKey("Problem", on_delete=models.CASCADE, null=True)
     user_name = models.ForeignKey("Student", on_delete=models.CASCADE, null=True)
     
+    def __str__(self) -> str:
+        return self.status

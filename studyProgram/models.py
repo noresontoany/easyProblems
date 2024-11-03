@@ -13,7 +13,7 @@ class LessonName(models.Model):
     name = models.TextField("Название темы")
     description = models.TextField("Теория")
     programing_language = models.ForeignKey("ProgramingLanguage", on_delete=models.CASCADE, null=True)
-    picture = models.ImageField("Изображение", null=True, upload_to="students")
+    picture = models.ImageField("Изображение", null=True, upload_to="students") #добавил
     class Meta:
         verbose_name = "Название урока"
         verbose_name_plural = "Названия уроков"

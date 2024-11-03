@@ -6,7 +6,6 @@ from studyProgram.models import Student, Submission
 @admin.register(ProgramingLanguage)
 class ProgramingLanguageAdmin(admin.ModelAdmin):
     pass
-
 @admin.register(LessonName)
 class LessonNameAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'programing_language']

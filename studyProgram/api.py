@@ -52,10 +52,26 @@ class StudentViewSet(ViewSet):
                     "name": field.name,
                     "type" : field.get_internal_type()
                 })
-        serializer = StudentFieldSerializer(data=fields_info, many=True)
+        serializer = RelatedInfoFieldSerializer(data=fields_info, many=True)
         serializer.is_valid()  # Просто для проверки структуры
         return Response(serializer.data)
         
+        
+        
+class UserProfileViewSet(GenericViewSet):
+    @action(url_path="info", detail=False, methods=["GET"])
+    def get_url(self, request, *args, **kwargs):
+        user = request.user
+        data ={
+            "is_authenticated" : user.is_authenticated
+        }
+        if user.is_authenticated:
+            data.update({
+                "is_super": user.is_superuser,
+                "name": user.username
+            })
+        return Response(data)
+    
 class ProblemViewSet(ViewSet):
     queryset = Problem.objects.all()
     def get_serializer_class(self):

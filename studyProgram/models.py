@@ -35,6 +35,7 @@ class Problem(models.Model):
 class Student(models.Model):
     name  = models.TextField("Ник")
     description = models.TextField("Имя Фамилия")
+    # user = models.ForeignKey("auth.User", verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
     class Meta:
         verbose_name = "Ученик"
         verbose_name_plural = "Ученики"
@@ -56,3 +57,4 @@ class Submission(models.Model):
         verbose_name_plural = "Попытки"
     def __str__(self) -> str:
         return self.status
+

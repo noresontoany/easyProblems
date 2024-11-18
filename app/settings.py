@@ -27,7 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  # Ограничение для анонимных пользователей
+        'rest_framework.throttling.UserRateThrottle',  # Ограничение для зарегистрированных пользователей
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/min',  # 5 запросов в минуту для анонимных
+        'user': '100000/day',  # 1000 запросов в день для зарегистрированных
+    }
+}
 # Application definition
 
 INSTALLED_APPS = [

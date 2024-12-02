@@ -1,6 +1,7 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.views import APIView
 from rest_framework.decorators import action
+from django.contrib.auth.models import User
 
 from rest_framework import mixins, viewsets
 from rest_framework.response import  Response
@@ -35,6 +36,10 @@ class ViewSet(mixins.CreateModelMixin,
 class StudentViewSet(ViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    # def get_queryset(self):
+    #     qs = super().get_queryset()
+    #     # фильтруем по текущему юзеру
+    #     qs = qs.filter(user=self.request.user)
     @action(detail=False, methods=['get'], url_path='fields')
     def fields(self, request, *args, **kwargs):        
         fields_info = get_model_fields_info(Student)
@@ -42,19 +47,19 @@ class StudentViewSet(ViewSet):
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data)
 
-    def get(self, request):
-        fields_info = []
-        private_fields = ["BigAutoField", "ForeignKey"]
-        for field in Student._meta.get_fields():
-            if field.get_internal_type() not in private_fields :
-                fields_info.append({
-                    "verbose": field.verbose_name,
-                    "name": field.name,
-                    "type" : field.get_internal_type()
-                })
-        serializer = RelatedInfoFieldSerializer(data=fields_info, many=True)
-        serializer.is_valid()  # Просто для проверки структуры
-        return Response(serializer.data)
+    # def get(self, request):
+    #     fields_info = []
+    #     private_fields = ["BigAutoField", "ForeignKey"]
+    #     for field in Student._meta.get_fields():
+    #         if field.get_internal_type() not in private_fields :
+    #             fields_info.append({
+    #                 "verbose": field.verbose_name,
+    #                 "name": field.name,
+    #                 "type" : field.get_internal_type()
+    #             })
+    #     serializer = RelatedInfoFieldSerializer(data=fields_info, many=True)
+    #     serializer.is_valid()  # Просто для проверки структуры
+    #     return Response(serializer.data)
         
         
         
@@ -132,14 +137,14 @@ def get_model_fields_info(model):
     private_fields = ["BigAutoField"]
 
     for field in model._meta.get_fields():
-        if not field.auto_created and field.get_internal_type() not in private_fields:
+        if not field.auto_created and field.get_internal_type() not in private_fields and field.verbose_name != "Пользователь":
             field_data = {
                 "verbose": field.verbose_name,
                 "name": field.name,
                 "type": field.get_internal_type()
             }
             if field.choices:
-                field_data["type"] = "choice"
+                field_data["type"] = "choiceList"
                 related_info = {
                     "related_verbose_name": field.verbose_name,
                     "related_model_id": field.name,
@@ -149,8 +154,7 @@ def get_model_fields_info(model):
                     ]
                 }
                 field_data["related_info"] = related_info
-
-            elif field.get_internal_type() == "ForeignKey":
+            elif field.get_internal_type() == "ForeignKey": 
                 field_data["type"] = "choice"
                 related_model = field.related_model
                 related_field = related_model._meta.get_field("name")

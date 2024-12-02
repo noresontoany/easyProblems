@@ -6,6 +6,13 @@ from studyProgram.models import Student, Problem, LessonName, ProgramingLanguage
 class StudentViewTestCase(TestCase):
     def test_get_list_of_students(self):
         student = baker.make("studyProgram.Student")
+        # for field in Student._meta.get_fields():
+            # if field.get_internal_type() == "ForeignKey":
+            #     print("=======================================")
+            #     for ver_field in field.related_model._meta.get_fields():
+            #         print(ver_field.verbose_name) 
+            #     # print(field.related_model._meta.get_fields())
+            #     print("=======================================")
         r = self.client.get('/api/students/')
         data = r.json()
         assert student.name == data[0]['name']

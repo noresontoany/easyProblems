@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from rest_framework import mixins, viewsets
 from rest_framework.response import  Response
 #models
-from studyProgram.models import Student
+from studyProgram.models import UserProfile
 from studyProgram.models import Problem
 from studyProgram.models import LessonName
 from studyProgram.models import ProgramingLanguage
@@ -34,7 +34,7 @@ class ViewSet(mixins.CreateModelMixin,
     pass
 
 class StudentViewSet(ViewSet):
-    queryset = Student.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = StudentSerializer
     # def get_queryset(self):
     #     qs = super().get_queryset()
@@ -42,7 +42,7 @@ class StudentViewSet(ViewSet):
     #     qs = qs.filter(user=self.request.user)
     @action(detail=False, methods=['get'], url_path='fields')
     def fields(self, request, *args, **kwargs):        
-        fields_info = get_model_fields_info(Student)
+        fields_info = get_model_fields_info(UserProfile)
         serializer = RelatedInfoFieldSerializer(data=fields_info, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data)
@@ -62,12 +62,13 @@ class StudentViewSet(ViewSet):
     #     return Response(serializer.data)
         
         
-        
+
 class UserProfileViewSet(GenericViewSet):
     @action(url_path="info", detail=False, methods=["GET"])
     def get_url(self, request, *args, **kwargs):
         user = request.user
         data ={
+            
             "is_authenticated" : user.is_authenticated
         }
         if user.is_authenticated:

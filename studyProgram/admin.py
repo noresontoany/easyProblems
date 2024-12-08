@@ -1,6 +1,6 @@
 from django.contrib import admin
 from studyProgram.models import ProgramingLanguage, LessonName, Problem
-from studyProgram.models import Student, Submission
+from studyProgram.models import UserProfile, Submission
 
 # Register your models here.
 @admin.register(ProgramingLanguage)
@@ -14,7 +14,7 @@ class LessonNameAdmin(admin.ModelAdmin):
 class ProblemAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'lesson_name']
     
-@admin.register(Student)
+@admin.register(UserProfile)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']
 

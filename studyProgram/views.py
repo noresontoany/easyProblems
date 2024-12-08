@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView
-from studyProgram.models import Student, Problem, Submission, LessonName, ProgramingLanguage
+from studyProgram.models import UserProfile, Problem, Submission, LessonName, ProgramingLanguage
 
 
 # Create your views here.
@@ -13,7 +13,7 @@ class ShowStudentView(TemplateView):
 
     def get_context_data(request, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['students'] = Student.objects.all()
+        context['students'] = UserProfile.objects.all()
 
         return context
 

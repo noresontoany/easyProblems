@@ -18,12 +18,16 @@ from django.contrib import admin
 from django.urls import include, path
 from studyProgram import views   
 from rest_framework.routers import DefaultRouter
+from django.conf.urls.static import static
+from django.conf import settings
+from django.contrib.auth.views import LoginView, LogoutView
 
 from studyProgram.api import StudentViewSet
 from studyProgram.api import ProblemViewSet
 from studyProgram.api import LessonNameViewSet
 from studyProgram.api import ProgramingLanguageViewSet
 from studyProgram.api import SubmissionViewSet
+from studyProgram.api import UserProfileViewSet
 
 router = DefaultRouter()
 router.register("students", StudentViewSet, basename="students")
@@ -31,9 +35,13 @@ router.register("problems", ProblemViewSet, basename="problems")
 router.register("lessonNames", LessonNameViewSet, basename="lessonNames")
 router.register("programingLanguages", ProgramingLanguageViewSet, basename="programingLanguages")
 router.register("submissions", SubmissionViewSet, basename="submissions")
-
+router.register("user", UserProfileViewSet, basename="user")
+class CustomLoginView(LoginView):
+    def get_success_url(self):
+        # URL страницы клиента Vue после успешного входа
+        return '/reg/'  # Укажи путь Vue
 urlpatterns = [
     path('students/', views.ShowStudentView.as_view()),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

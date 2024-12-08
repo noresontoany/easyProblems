@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class ProgramingLanguage(models.Model): 
     name = models.TextField("Название языка")
@@ -13,7 +13,7 @@ class LessonName(models.Model):
     name = models.TextField("Название темы")
     description = models.TextField("Теория")
     programing_language = models.ForeignKey("ProgramingLanguage", on_delete=models.CASCADE, null=True)
-    picture = models.ImageField("Изображение", null=True, upload_to="students")
+    picture = models.ImageField("Изображение", null=True, upload_to="students") #добавил
     class Meta:
         verbose_name = "Название урока"
         verbose_name_plural = "Названия уроков"
@@ -32,9 +32,10 @@ class Problem(models.Model):
     # def __str__(self) -> str:
     #     return f"{self.lesson_name.programing_language.name} /  {self.lesson_name.name} / {self.name}"
 
-class Student(models.Model):
+class UserProfile(models.Model):
     name  = models.TextField("Ник")
     description = models.TextField("Имя Фамилия")
+    user = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.CASCADE, null=True) 
     class Meta:
         verbose_name = "Ученик"
         verbose_name_plural = "Ученики"
@@ -50,9 +51,10 @@ class Submission(models.Model):
     status = models.CharField("Статус", max_length=1, choices=status_code, default='2')
     code = models.TextField()
     problem  = models.ForeignKey("Problem", on_delete=models.CASCADE, null=True)
-    user_name = models.ForeignKey("Student", on_delete=models.CASCADE, null=True)
+    user_name = models.ForeignKey("UserProfile", on_delete=models.CASCADE, null=True)
     class Meta:
         verbose_name = "Попытка"
         verbose_name_plural = "Попытки"
     def __str__(self) -> str:
         return self.status
+

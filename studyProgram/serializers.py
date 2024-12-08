@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
-from studyProgram.models import Student, Problem, Submission, LessonName, ProgramingLanguage
+from studyProgram.models import UserProfile, Problem, Submission, LessonName, ProgramingLanguage
 
 
 
@@ -23,9 +24,18 @@ class RelatedInfoFieldSerializer(serializers.Serializer):
 #================================================================
 
 class StudentSerializer(serializers.ModelSerializer):
+    
+    def create(self, validated_data): 
+        user = User.objects.create_user(password="Adasd76atsdg7a6s", username="vvvv")
+        UserProfile.objects.create(user=user, name="asdasd", description="asdasdasd")
+            
+        if 'request' in self.context:
+            validated_data['user'] = self.context['request'].user
+            
+        return super().create(validated_data)
     class  Meta:
-        model = Student
-        fields = ['id', 'name', 'description']
+        model = UserProfile
+        fields = ['id', 'name', 'description', 'user']
         
 #ProgramingLanguage
 #================================================================

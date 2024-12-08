@@ -1,0 +1,5 @@
+__pycashe__
+*.sqlite3
+.conda
+media
+

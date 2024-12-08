@@ -6,6 +6,13 @@ from studyProgram.models import Student, Problem, LessonName, ProgramingLanguage
 class StudentViewTestCase(TestCase):
     def test_get_list_of_students(self):
         student = baker.make("studyProgram.Student")
+        # for field in Student._meta.get_fields():
+            # if field.get_internal_type() == "ForeignKey":
+            #     print("=======================================")
+            #     for ver_field in field.related_model._meta.get_fields():
+            #         print(ver_field.verbose_name) 
+            #     # print(field.related_model._meta.get_fields())
+            #     print("=======================================")
         r = self.client.get('/api/students/')
         data = r.json()
         assert student.name == data[0]['name']
@@ -66,7 +73,7 @@ class ProgramingLanguageViewSetCase(TestCase):
     def test_get_list_programing_languages(self):
         programing_language = baker.make("studyProgram.ProgramingLanguage")
         
-        r = self.client.get('/api/ProgramingLanguageViewSet/')
+        r = self.client.get('/api/programingLanguages/')
         data = r.json()
         
         assert programing_language.name == data[0]['name']
@@ -74,7 +81,7 @@ class ProgramingLanguageViewSetCase(TestCase):
         assert len(data) == 1
 
     def test_create_programing_language(self):
-        r = self.client.post("/api/ProgramingLanguageViewSet/", {"name": "R"})
+        r = self.client.post("/api/programingLanguages/", {"name": "R"})
 
         programing_language_id = r.json()['id']
         programing_languages = ProgramingLanguage.objects.all()
@@ -84,14 +91,14 @@ class ProgramingLanguageViewSetCase(TestCase):
         assert programing_language.name == 'R'
 
     def test_delete_programing_language(self):
-        programing_languages = baker.make("ProgramingLanguage", 10)
-        r = self.client.get('/api/ProgramingLanguageViewSet/')
+        programing_languages = baker.make("programingLanguages", 10)
+        r = self.client.get('/api/programingLanguages/')
         data = r.json()
         assert len(data) == 10 
 
         programing_language_id_delete = programing_languages[3].id
-        self.client.delete(f'/api/ProgramingLanguageViewSet/{programing_language_id_delete}/')
-        r = self.client.get('/api/ProgramingLanguageViewSet/')
+        self.client.delete(f'/api/programingLanguages/{programing_language_id_delete}/')
+        r = self.client.get('/api/programingLanguages/')
         assert r.status_code == 200
         
         data = r.json()
@@ -101,19 +108,19 @@ class ProgramingLanguageViewSetCase(TestCase):
     def test_update_programing_language(self):
         programing_languages = baker.make("ProgramingLanguage", 10)
         programing_language = programing_languages[0]
-        r = self.client.get(f'/api/ProgramingLanguageViewSet/{programing_language.id}/')
+        r = self.client.get(f'/api/programingLanguages/{programing_language.id}/')
         data = r.json()
         assert data['name'] == programing_language.name
 
         r = self.client.put(
-            f'/api/ProgramingLanguageViewSet/{programing_language.id}/',
+            f'/api/programingLanguages/{programing_language.id}/',
             {"name": "qwerty"},
             content_type='application/json'
         )
         assert r.status_code == 200
 
         r = self.client.get(
-            f'/api/ProgramingLanguageViewSet/{programing_language.id}/',
+            f'/api/programingLanguages/{programing_language.id}/',
             {"name": "qwerty"},
             content_type='application/json'
         )
